@@ -95,7 +95,7 @@ module processor(
 	 wire pc_1_isNotEqual, pc_1_isLessThan, pc_1_overflow, pc_i_isNotEqual, pc_i_isLessThan, pc_i_overflow;
 	 wire [31:0] pc_in, pc_out, pc_1, pc_i, pc_br, pc_jp;
 	 
-	 wire Rwe, Rdst, ALUinB, Dmwe, Rwd, BR, JP, Jr, rd_30, rd_31, rA_r0, Rwd_ovf, Rwd_pc_1;
+	 wire Rwe, Rdst, ALUinB, Dmwe, Rwd, BR, JP, Jr, rd_30, rd_31, rA_r0, Rwd_ovf, Rwd_pc_1, Rwd_setx;
 	 wire [4:0] ALUop;
 	 wire [31:0] ovf_val;
 	 
@@ -103,7 +103,7 @@ module processor(
 	 wire [4:0] ctrl_writeReg_temp, ctrl_ALUopcode, ctrl_shiftamt;
 	 wire [31:0] immed_sx, immed_sx_pos, immed_sx_neg, data_operandA, data_operandB, data_result;
 	 
-	 wire [31:0] data_writeReg_t1, data_writeReg_t2;
+	 wire [31:0] data_writeReg_t1, data_writeReg_t2, data_writeReg_t3;
 	 
 	 // PC
 	 register PC_reg(pc_out, pc_in, clock, reset, 1'b1);
@@ -115,14 +115,14 @@ module processor(
 	 // PC JP
 	 assign pc_jp = JP ? {5'b00000, q_imem[26:0]} : pc_br;
 	 // PC Jr
-	 assign pc_in = Jr ? ctrl_readRegB : pc_jp;
+	 assign pc_in = Jr ? data_readRegB : pc_jp;
 	 
 	 // InsnMem
 	 assign address_imem = pc_out[11:0];
 	 
 	 // Control Circuit
 	 control_circuit cc(q_imem, isNotEqual, isLessThan, overflow, 
-	 Rwe, Rdst, ALUinB, ALUop, Dmwe, Rwd, BR, JP, Jr, rd_30, rd_31, rA_r0, Rwd_ovf, Rwd_pc_1, ovf_val);
+	 Rwe, Rdst, ALUinB, ALUop, Dmwe, Rwd, BR, JP, Jr, rd_30, rd_31, rA_r0, Rwd_ovf, Rwd_pc_1, Rwd_setx, ovf_val);
 	 
 	 // regfile
 	 assign ctrl_writeEnable = Rwe;
@@ -148,6 +148,7 @@ module processor(
 	 assign wren = Dmwe;
 	 assign data_writeReg_t1 = Rwd ? q_dmem : data_result;
 	 assign data_writeReg_t2 = Rwd_ovf ? ovf_val : data_writeReg_t1;
-	 assign data_writeReg = Rwd_pc_1 ? pc_1 : data_writeReg_t2;
+	 assign data_writeReg_t3 = Rwd_pc_1 ? pc_1 : data_writeReg_t2;
+	 assign data_writeReg = Rwd_setx ? {5'b00000, q_imem[26:0]} : data_writeReg_t3;
 	
 endmodule

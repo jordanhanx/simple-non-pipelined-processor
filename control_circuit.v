@@ -1,10 +1,10 @@
 module control_circuit(q_imem, isNotEqual, isLessThan, overflow, 
-Rwe, Rdst, ALUinB, ALUop, Dmwe, Rwd, BR, JP, Jr, rd_30, rd_31, rA_r0, Rwd_ovf, Rwd_pc_1, ovf_val);
+Rwe, Rdst, ALUinB, ALUop, Dmwe, Rwd, BR, JP, Jr, rd_30, rd_31, rA_r0, Rwd_ovf, Rwd_pc_1, Rwd_setx, ovf_val);
 	
 	input [31:0] q_imem;
 	input isNotEqual, isLessThan, overflow;
 	
-	output Rwe, Rdst, ALUinB,  Dmwe, Rwd, BR, JP, Jr, rd_30, rd_31, rA_r0, Rwd_ovf, Rwd_pc_1;
+	output Rwe, Rdst, ALUinB,  Dmwe, Rwd, BR, JP, Jr, rd_30, rd_31, rA_r0, Rwd_ovf, Rwd_pc_1, Rwd_setx;
 	output [4:0] ALUop;
 	output [31:0] ovf_val;
 	
@@ -115,6 +115,9 @@ Rwe, Rdst, ALUinB, ALUop, Dmwe, Rwd, BR, JP, Jr, rd_30, rd_31, rA_r0, Rwd_ovf, R
 	
 	// Rwd_pc_1
 	assign Rwd_pc_1 = op_jal;
+	
+	// Rwd_setx
+	assign Rwd_setx = op_setx;
 	
 	
 endmodule
