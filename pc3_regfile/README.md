@@ -1,8 +1,7 @@
 # regfile
 *ece550 project checkpoint3: regfile*
 
-- name: **Xu (Jordan) Han**
-- netID: **xh123**
+
 
 ## Module Description
 1. Use dffes to build 32-bit register with writing enable control
