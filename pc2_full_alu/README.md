@@ -1,8 +1,6 @@
 # simpleALU
 *repo for ece550 project*
 
-- name: **Xu (Jordan) Han**
-- netID: **xh123**
 
 ## Module Description
 #### Check point 1
