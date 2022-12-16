@@ -19,7 +19,7 @@ module regfile (
 	
 	// decode ctrl signal
 	decoder decoder_write(ctrl_writeReg_decode, ctrl_writeReg);
-	and and_write_enable[31:0](ctrl_writeReg_decode_ena, ctrl_writeEnable);
+	and and_write_enable[31:0](ctrl_writeReg_decode_ena, ctrl_writeReg_decode, ctrl_writeEnable);
 	decoder decoder_readA(ctrl_readRegA_decode,ctrl_readRegA);
 	decoder decoder_readB(ctrl_readRegB_decode,ctrl_readRegB);
 	
